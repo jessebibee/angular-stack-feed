@@ -1,0 +1,11 @@
+{
+  "name": "angular-stack-feed",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "angular": "~1.2.15",
+    "bootstrap": "~3.1.1",
+    "angular-bootstrap": "~0.10.0"
+  }
+}

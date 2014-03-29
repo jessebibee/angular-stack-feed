@@ -1,5 +1,6 @@
 {
   "name": "angular-stack-feed",
   "version": "0.0.0",
+  "private": true,
   "description": "StackExchange Angular.js driven feed."
 }
