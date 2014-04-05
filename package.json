@@ -2,5 +2,14 @@
   "name": "angular-stack-feed",
   "version": "0.0.0",
   "private": true,
-  "description": "StackExchange Angular.js driven feed."
+  "description": "StackExchange Angular.js driven feed.",
+  "devDependencies": {
+    "karma": "^0.12.3",
+    "grunt": "^0.4.4",
+    "grunt-karma": "^0.8.2",
+    "karma-jasmine": "^0.1.5",
+    "karma-chrome-launcher": "^0.1.3",
+    "karma-ie-launcher": "^0.1.4",
+    "karma-firefox-launcher": "^0.1.3"
+  }
 }

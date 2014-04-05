@@ -1,22 +1,51 @@
-﻿'use strict';
+﻿(function () {
+    'use strict';
 
-app.factory('DataService', ['$q', '$http', function ($q, $http) {
+    var serviceId = 'DataService';
+    app.factory(serviceId, ['$q', '$http', 'IdentityService', DataService]);
 
-    var questionsUri = 'http://api.stackexchange.com/2.2/questions';
+    function DataService($q, $http, identity) {
+        //TODO - Refactor updateQuota to an http interceptor?
 
-    var getQuestions = function (tag) {
-        var deferred = $q.defer();
-        $http.get(questionsUri + '?order=desc&sort=creation&tagged=' + tag + '&site=stackoverflow').
-            success(function (data, status, headers, config) {
-                deferred.resolve(data);
-            }).
-            error(function (data, status, headers, config) {
-                deferred.reject(data);
-            });
-        return deferred.promise;
+        var rootUri = 'http://api.stackexchange.com/2.2/';
+
+        var getQuestions = function (tag) {
+            var deferred = $q.defer();
+            $http.get(rootUri + 'questions?order=desc&sort=creation&tagged=' + tag + '&site=stackoverflow')
+                .success(function (data, status, headers, config) {
+                    updateQuota(data);
+                    deferred.resolve(data);
+                })
+                .error(function (data, status, headers, config) {
+                    updateQuota(data);
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        }
+
+        var getTags = function () {
+            var deferred = $q.defer();
+            $http.get(rootUri + 'tags?order=desc&sort=popular&site=stackoverflow')
+                .success(function (data, status, headers, config) {
+                    updateQuota(data);
+                    deferred.resolve(data);
+                })
+                .error(function (data, status, headers, config) {
+                    updateQuota(data);
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        }
+
+        function updateQuota(data) {
+            if (data && data.hasOwnProperty('quota_remaining')) {
+                identity.quotaRemaining = data.quota_remaining;
+            }
+        }
+
+        return {
+            getQuestions: getQuestions,
+            getTags: getTags
+        }
     }
-
-    return {
-        getQuestions: getQuestions
-    }
-}]);
+})();
