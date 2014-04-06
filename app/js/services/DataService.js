@@ -9,9 +9,9 @@
 
         var rootUri = 'http://api.stackexchange.com/2.2/';
 
-        var getQuestions = function (tag) {
+        var getQuestions = function (filters) {
             var deferred = $q.defer();
-            $http.get(rootUri + 'questions?order=desc&sort=creation&tagged=' + tag + '&site=stackoverflow')
+            $http.get(rootUri + 'questions?order=desc&sort=creation&tagged=' + filters[0].includedTags.join(';') + '&site=stackoverflow')
                 .success(function (data, status, headers, config) {
                     updateQuota(data);
                     deferred.resolve(data);

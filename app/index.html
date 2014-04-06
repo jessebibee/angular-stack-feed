@@ -3,6 +3,7 @@
 <head>
     <title></title>
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
@@ -12,38 +13,62 @@
         <section id="content" class="content">
             <div ng-include src="'partials/sidebar.html'"></div>
             <div ng-controller="GridController" style="margin-top: 75px;">
-                <p class="pull-right">Daily Quota Remaining: {{quotaRemaining}}</p>
+                <!-- Filters -->
+                <table class="table col-md-6">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Included Tags</th>
+                            <th>Excluded Tags</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tr ng-repeat="filter in filters">
+                        <td></td>
+                        <td ng-bind="filter.name"></td>
+                        <td ng-bind="filter.includedTags"></td>
+                        <td ng-bind="filter.excludedTags"></td>
+                        <td>
+                            <span ng-click="editFilter(filter)" class="glyphicon glyphicon-pencil"></span>
+                            <span ng-click="removeFilter(filter)" class="glyphicon glyphicon-remove"></span>
+                        </td>
+                    </tr>
+                </table>
+                <button class="btn btn-primary" ng-click="addFilter()">Add Filter</button>
+
+                <!-- Grid -->
                 <div>
-                    <label for="fromDate">Starting Date:</label>
-                    <input type="datetime" name="startDate" ng-model="filters.startDate" /> 
-                    <label for="fromDate">Update Interval:</label>
-                    <input type="number" name="updateInterval" ng-model="filters.updateInterval" /> 
-                    <label for="fromDate">Tags:</label>
-                    <input type="datetime" name="tags" ng-model="filters.tags" /> 
-                </div>
-                <div>
+                    <div class="pull-right">
+                        <label for="fromDate">Update Interval (Mins):</label>
+                        <input type="number" name="updateInterval" ng-model="updateIntervalMins" />
+                    </div>
+                    <span class="pull-right" ng-if="lastUpdateDate">Last Update: {{lastUpdateDate | date:'HH:mm:ss'}}</span>
+                    <button class="btn btn-primary" ng-if="!lastUpdateDate" ng-click="initialize()">Initialize Feed</button>
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Title</th>
                                 <th>Tags</th>
-                                <th>Answer Count</th>
                                 <th>Answered</th>
-                                <th>Owner Reputation</th>
+                                <th>Answer Count</th>
                                 <th>View Count</th>
                                 <th>Votes</th>
-                                <th></th>
+                                <th>Owner Reputation</th>
+                                <th>Accept Rate</th>
                             </tr>
                         </thead>
                         <tr ng-repeat="question in questions" ng-click="selectQuestion(question)">
                             <td ng-bind="question.title"></td>
                             <td ng-bind="question.tags"></td>
+                            <td ng-if="question.is_answered"><span class="glyphicon glyphicon-ok icon-success"></span></td>
+                            <td ng-if="!question.is_answered"></td>
                             <td ng-bind="question.answer_count"></td>
-                            <td ng-bind="question.is_answered"></td>
-                            <td ng-bind="question.owner.reputation"></td>
                             <td ng-bind="question.view_count"></td>
                             <td ng-bind="question.score"></td>
-                            <td><span ng-click="removeQuestion(question)" class="glyphicon glyphicon-remove"></span></td>
+                            <td ng-bind="question.owner.reputation"></td>
+                            <td ng-if="question.owner.accept_rate" ng-bind="question.owner.accept_rate + '%'"></td>
+                            <td ng-if="!question.owner.accept_rate"></td>
                         </tr>
                     </table>
                 </div>

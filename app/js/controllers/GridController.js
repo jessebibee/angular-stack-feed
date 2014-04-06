@@ -4,11 +4,14 @@
     var controllerId = 'GridController';
     app.controller(controllerId, ['$scope', '$timeout', 'DataService', 'IdentityService', GridController]);
 
-    function GridController($scope, $timeout, dataService, identity) {
-        $scope.quotaRemaining = identity.quotaRemaining;
-        $scope.tags = [];
-        $scope.questions = {};
-        $scope.filters = {};
+    function GridController($scope, $interval, dataService) {
+        var updateInterval = null;
+
+        //$scope.tags = []; //move to rootScope
+        $scope.updateIntervalMins = 1; //2 is default
+        $scope.lastUpdateDate = null;
+        $scope.questions = [];
+        $scope.filters = [{ name: 'Angularjs', includedTags: ['angularjs'], excludedTags: [] }];
 
         $scope.selectQuestion = function (question) {
             console.log(question.link);
@@ -16,22 +19,50 @@
             //Mark the row in the table as 'clicked'
         };
 
-        //TODO - Start here as a test case
-        $scope.removeQuestion = function (question) {
-            console.log('removing', question);
+        $scope.initialize = function () {
+            loadQuestions();
         };
 
-        $scope.initialize = function () {
-            dataService.getQuestions('angularjs') //send in filters here?
+        ////reset the timer
+        //$scope.$watch('updateIntervalMins', function (newVal, oldVal) {
+        //    resetTimer(newVal);
+        //});
+
+        
+        function loadQuestions() {
+            dataService.getQuestions($scope.filters) //send in filters here - filters that are on
                 .then(function (data) {
-                    console.log(data);
+                    //console.log('Loaded questions');
                     $scope.questions = data.items;
+                    $scope.lastUpdateDate = new Date();
                 }), function (reason) {
                     alert('Failed: ' + reason);
                 };
-        };
 
-        $scope.initialize(); //just for now
+            updateInterval = $interval(loadQuestions, $scope.updateIntervalMins * 60000);
+            //updateClock = $timeout(updateClockTime, 1000);
+        }
+
+
+
+
+        //function updateClockTime() {
+        //    $scope.clock = new Date();
+        //    updateClock = $timeout(updateClockTime, 1000);
+        //};
+
+        //function resetTimer(mins) {
+        //    $interval.cancel(updateTimer);
+        //    //$timeout.cancel(updateClock);
+        //    updateTimer = $interval(loadQuestions, mins * 60000);
+        //    //updateClock = $timeout(updateClock, 1000);
+        //}
+
+        
+
+
+
+
 
         //loadTags('stackoverflow');
 
@@ -50,10 +81,6 @@
                 }), function (reason) {
                     alert('Failed: ' + reason);
                 };
-        }
-
-        function fetchNewQuestions() {
-            //look at the timeout interval and modify the filters object to be the startdate?
         }
     }
 })();

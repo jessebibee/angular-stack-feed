@@ -1,5 +1,3 @@
 ﻿'use strict';
 
-var app = angular.module('app', []);
-
-console.log(app);
+var app = angular.module('app', ['ui.bootstrap']);
