@@ -2,17 +2,19 @@
     'use strict';
 
     var controllerId = 'FilterController';
-    app.controller(controllerId, ['$scope', 'DataService', FilterController]);
+    app.controller(controllerId, ['$scope', '$modalInstance', FilterController]);
 
-    function FilterController($scope, dataService) {
-        $scope.filters = [];
+    function FilterController($scope, $modalInstance) {
+        $scope.tags = [];
+        $scope.filter = {};
 
-        $scope.addFilter = function (filter) {
-            $scope.filters.push(filter);
+        $scope.addFilter = function () {
+            //$scope.filters.push(filter);
+            $modalInstance.close();
         };
 
-        $scope.removeFilter = function (filter) {
-
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
         };
     }
 })();

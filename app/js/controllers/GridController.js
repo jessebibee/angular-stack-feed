@@ -2,16 +2,29 @@
     'use strict';
 
     var controllerId = 'GridController';
-    app.controller(controllerId, ['$scope', '$timeout', 'DataService', 'IdentityService', GridController]);
+    app.controller(controllerId, ['$scope', '$timeout', '$modal', 'DataService', GridController]);
 
-    function GridController($scope, $interval, dataService) {
+    function GridController($scope, $interval, $modal, dataService) {
         var updateInterval = null;
 
-        //$scope.tags = []; //move to rootScope
-        $scope.updateIntervalMins = 1; //2 is default
+        $scope.updateIntervalMins = 2; 
         $scope.lastUpdateDate = null;
         $scope.questions = [];
         $scope.filters = [{ name: 'Angularjs', includedTags: ['angularjs'], excludedTags: [] }];
+
+        $scope.addFilter = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/filter.html',
+                scope: $scope,
+                controller: 'FilterController'
+                //resolve: {
+                //    items: function () {
+                //        return $scope.items;
+                //    }
+                //}
+            });
+
+        };
 
         $scope.selectQuestion = function (question) {
             console.log(question.link);
