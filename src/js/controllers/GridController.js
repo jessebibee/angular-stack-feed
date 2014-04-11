@@ -2,12 +2,12 @@
     'use strict';
 
     var controllerId = 'GridController';
-    app.controller(controllerId, ['$scope', '$timeout', '$modal', '$window', 'DataContext', 'StackProxy', GridController]);
+    app.controller(controllerId, ['$scope', '$timeout', '$window', 'Notifier', 'DataContext', 'StackProxy', GridController]);
 
-    function GridController($scope, $interval, $modal, $window, context, proxy) {
+    function GridController($scope, $interval, $window, notifier, context, proxy) {
         var updateInterval = null;
 
-        $scope.updateIntervalMins = 2; 
+        $scope.updateIntervalMins = 1; 
         $scope.lastUpdateDate = null;
         $scope.questions = [];
         $scope.filters = [{ name: 'Angularjs', includedTags: ['angularjs'], excludedTags: [] }];
@@ -28,18 +28,32 @@
         function loadQuestions() {
             proxy.getQuestions($scope.filters) //send in filters here - filters that are on
                 .then(function (data) {
-                    //console.log('Loaded questions');
+                    var newQuestionsCount = getTotalNewQuestions(data.items);
                     $scope.questions = data.items;
                     $scope.lastUpdateDate = new Date();
+                    if (newQuestionsCount) {
+                        notifier.success('Loaded ' + newQuestionsCount + ' questions');
+                    }
                 }), function (reason) {
-                    alert('Failed: ' + reason);
+                    notifier.error('Failed: ' + reason);
                 };
 
             updateInterval = $interval(loadQuestions, $scope.updateIntervalMins * 60000);
             //updateClock = $timeout(updateClockTime, 1000);
         }
 
+        function getTotalNewQuestions(newQuestions) {
+            var oldQuestionIds = [];
+            var newQuestionIds = [];
+            for (var i = 0; i < $scope.questions.length; i++) {
+                oldQuestionIds.push($scope.questions[i].question_id);
+            }
+            for (var i = 0; i < newQuestions.length; i++) {
+                newQuestionIds.push(newQuestions[i].question_id);
+            }
 
+            return _.difference(newQuestionIds, oldQuestionIds).length;
+        }
 
 
 

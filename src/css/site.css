@@ -1,5 +1,5 @@
 ﻿/* http://angular-ui.github.io/bootstrap/ */
-.nav, .pagination, .carousel, .panel-title a {
+.nav, .pagination, .carousel, .panel-title, td a {
     cursor: pointer;
 }
 
