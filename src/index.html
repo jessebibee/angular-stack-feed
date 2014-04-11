@@ -50,25 +50,23 @@
                             <tr>
                                 <th>Title</th>
                                 <th>Tags</th>
-                                <th>Answered</th>
-                                <th>Answer Count</th>
-                                <th>View Count</th>
-                                <th>Votes</th>
-                                <th>Owner Reputation</th>
-                                <th>Accept Rate</th>
+                                <th class="text-center">Answered</th>
+                                <th class="text-center">Answer Count</th>
+                                <th class="text-center">View Count</th>
+                                <th class="text-center">Votes</th>
+                                <th class="text-center">Owner Reputation</th>
+                                <th class="text-center">Accept Rate</th>
                             </tr>
                         </thead>
                         <tr ng-repeat="question in questions" ng-click="selectQuestion(question)">
-                            <td><a ng-href="{{question.link}}" target="_blank">{{question.title}}</a></td>
+                            <td><a ng-href="{{question.link}}" target="_blank" ng-bind-html="question.title"></a></td>
                             <td ng-bind="question.tags"></td>
-                            <td ng-if="question.is_answered"><span class="glyphicon glyphicon-ok icon-success"></span></td>
-                            <td ng-if="!question.is_answered"></td>
-                            <td ng-bind="question.answer_count"></td>
-                            <td ng-bind="question.view_count"></td>
-                            <td ng-bind="question.score"></td>
-                            <td ng-bind="question.owner.reputation"></td>
-                            <td ng-if="question.owner.accept_rate" ng-bind="question.owner.accept_rate + '%'"></td>
-                            <td ng-if="!question.owner.accept_rate"></td>
+                            <td class="text-center"><span ng-show="question.is_answered" class="glyphicon glyphicon-ok icon-success"></span></td>
+                            <td class="text-center"><span ng-show="question.answer_count" ng-bind=" question.answer_count | number"></span></td>
+                            <td class="text-center"><span ng-show="question.view_count" ng-bind=" question.view_count | number"></span></td>
+                            <td class="text-center"><span ng-show="question.score" ng-bind="question.score | number"></span></td>
+                            <td class="text-center"><span ng-show="question.owner.reputation" ng-bind=" question.owner.reputation | number"></span></td>
+                            <td class="text-center"><span ng-show="question.owner.accept_rate" ng-bind="question.owner.accept_rate + '%'"></span></td>
                         </tr>
                     </table>
                 </div>
@@ -81,6 +79,7 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 
     <!-- Bootstrapping -->
     <script src="js/app.js"></script>
@@ -89,9 +88,14 @@
     <script src="js/controllers/GridController.js"></script>
     <script src="js/controllers/FilterController.js"></script>
 
+    <!-- app Filters -->
+    <script src="js/filters/decodeURIComponent.js"></script>
+
     <!-- app Services -->
     <script src="js/services/DataService.js"></script>
     <script src="js/services/FilterService.js"></script>
     <script src="js/services/IdentityService.js"></script>
+
+    <!-- app Directives -->
 </body>
 </html>
