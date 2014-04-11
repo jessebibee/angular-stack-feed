@@ -17,6 +17,9 @@ module.exports = function(config) {
         files : [
             'src/bower_components/angular/angular.js',
             'src/bower_components/angular-mocks/angular-mocks.js',
+            'src/bower_components/underscore/underscore.js',
+            'src/bower_components/angular-sanitize/angular-sanitize.js',
+            'src/bower_components/angular-bootstrap/ui-bootstrap.js',
             'src/js/**/*.js',
             'test/unit/**/*.js'
         ],

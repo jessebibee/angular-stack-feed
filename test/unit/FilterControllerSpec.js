@@ -10,9 +10,9 @@ describe('FilterController', function () {
         ctrl = $controller('FilterController', { '$scope': $scope });
     }));
 
-    it('filter should be added', inject(function () {
-        expect($scope.filters).toEqual(new Array());
-        $scope.addFilter({});
-        expect($scope.filters.length).toEqual(1);
-    }));
+    //it('filter should be added', inject(function () {
+    //    expect($scope.filters).toEqual(new Array());
+    //    $scope.addFilter({});
+    //    expect($scope.filters.length).toEqual(1);
+    //}));
 });
