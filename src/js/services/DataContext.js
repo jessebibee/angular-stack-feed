@@ -2,9 +2,23 @@
     'use strict';
 
     var serviceId = 'DataContext';
-    app.factory(serviceId, ['$q', '$http', DataContext]);
+    app.factory(serviceId, DataContext);
 
-    function DataContext($q, $http) {
-        return {};
+    function DataContext() {
+        var viewedQuestions = []; //holds questionId's that have been opened
+        var tags = {}; //holds Stack Exchange tags
+
+        var getViewedQuestions = function () {
+            return viewedQuestions;
+        };
+
+        var addViewedQuestion = function (questionId) {
+            viewedQuestions.push(questionId);
+        };
+
+        return {
+            getViewedQuestions: getViewedQuestions,
+            addViewedQuestion: addViewedQuestion
+        };
     }
 })();

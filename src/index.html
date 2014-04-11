@@ -3,34 +3,14 @@
 <head>
     <title></title>
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="bower_components/toastr/toastr.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
     <div ng-include src="'partials/header.html'"></div>
     <div class="container" ng-controller="GridController">
         <!-- Filters -->
-        <table class="table col-md-6">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Included Tags</th>
-                    <th>Excluded Tags</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tr ng-repeat="filter in filters">
-                <td></td>
-                <td ng-bind="filter.name"></td>
-                <td ng-bind="filter.includedTags"></td>
-                <td ng-bind="filter.excludedTags"></td>
-                <td>
-                    <span ng-click="editFilter(filter)" class="glyphicon glyphicon-pencil"></span>
-                    <span ng-click="removeFilter(filter)" class="glyphicon glyphicon-remove"></span>
-                </td>
-            </tr>
-        </table>
-        <button class="btn btn-primary" ng-click="addFilter()">Add Filter</button>
+
 
         <!-- Grid -->
         <div>
@@ -53,8 +33,8 @@
                         <th class="text-center">Accept Rate</th>
                     </tr>
                 </thead>
-                <tr ng-repeat="question in questions" ng-click="selectQuestion(question)" ng-class="{danger: question.question_id % 2}">
-                    <td><a ng-href="{{question.link}}" target="_blank" ng-bind-html="question.title"></a></td>
+                <tr ng-repeat="question in questions" ng-class="{danger: questionPreviouslyViewed(question.question_id)}">
+                    <td><a ng-bind-html="question.title" ng-click="openQuestion(question)"></a></td>
                     <td ng-bind="question.tags"></td>
                     <td class="text-center"><span ng-show="question.is_answered" class="glyphicon glyphicon-ok icon-success"></span></td>
                     <td class="text-center"><span ng-show="question.answer_count" ng-bind=" question.answer_count | number"></span></td>
@@ -70,6 +50,8 @@
     <!-- Vendor Scripts -->
     <!--<script src='https://api.stackexchange.com/js/2.0/all.js'></script>-->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/toastr/toastr.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
