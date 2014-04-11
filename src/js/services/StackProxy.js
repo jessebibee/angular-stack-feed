@@ -11,7 +11,7 @@
 
         var getQuestions = function (filters) {
             var deferred = $q.defer();
-            $http.get(rootUri + '/search/advanced?order=desc&sort=creation&tagged=' + filters[0].includedTags.join(';') + '&site=stackoverflow')
+            $http.get(rootUri + '/search/advanced?key=fFGxJHjVNmw4u*YZqKNLlw((&order=desc&sort=creation&tagged=' + filters[0].includedTags.join(';') + '&site=stackoverflow')
                 .success(function (data, status, headers, config) {
                     updateQuota(data);
                     deferred.resolve(data);
@@ -25,7 +25,7 @@
 
         var getTags = function () {
             var deferred = $q.defer();
-            $http.get(rootUri + '/tags?order=desc&sort=popular&site=stackoverflow')
+            $http.get(rootUri + '/tags?key=fFGxJHjVNmw4u*YZqKNLlw((&order=desc&sort=popular&site=stackoverflow')
                 .success(function (data, status, headers, config) {
                     updateQuota(data);
                     deferred.resolve(data);
