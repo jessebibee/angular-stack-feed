@@ -6,75 +6,69 @@
     <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-        <header class="clearfix">
-            <div ng-include src="'partials/header.html'"></div>
-        </header>
-        <section id="content" class="content">
-            <div ng-include src="'partials/sidebar.html'"></div>
-            <div ng-controller="GridController" style="margin-top: 75px;">
-                <!-- Filters -->
-                <table class="table col-md-6">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Included Tags</th>
-                            <th>Excluded Tags</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tr ng-repeat="filter in filters">
-                        <td></td>
-                        <td ng-bind="filter.name"></td>
-                        <td ng-bind="filter.includedTags"></td>
-                        <td ng-bind="filter.excludedTags"></td>
-                        <td>
-                            <span ng-click="editFilter(filter)" class="glyphicon glyphicon-pencil"></span>
-                            <span ng-click="removeFilter(filter)" class="glyphicon glyphicon-remove"></span>
-                        </td>
-                    </tr>
-                </table>
-                <button class="btn btn-primary" ng-click="addFilter()">Add Filter</button>
+    <div ng-include src="'partials/header.html'"></div>
+    <div class="container" ng-controller="GridController">
+        <!-- Filters -->
+        <table class="table col-md-6">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Included Tags</th>
+                    <th>Excluded Tags</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tr ng-repeat="filter in filters">
+                <td></td>
+                <td ng-bind="filter.name"></td>
+                <td ng-bind="filter.includedTags"></td>
+                <td ng-bind="filter.excludedTags"></td>
+                <td>
+                    <span ng-click="editFilter(filter)" class="glyphicon glyphicon-pencil"></span>
+                    <span ng-click="removeFilter(filter)" class="glyphicon glyphicon-remove"></span>
+                </td>
+            </tr>
+        </table>
+        <button class="btn btn-primary" ng-click="addFilter()">Add Filter</button>
 
-                <!-- Grid -->
-                <div>
-                    <div class="pull-right">
-                        <label for="fromDate">Update Interval (Mins):</label>
-                        <input type="number" name="updateInterval" ng-model="updateIntervalMins" />
-                    </div>
-                    <span class="pull-right" ng-if="lastUpdateDate">Last Update: {{lastUpdateDate | date:'HH:mm:ss'}}</span>
-                    <button class="btn btn-primary" ng-if="!lastUpdateDate" ng-click="initialize()">Initialize Feed</button>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Tags</th>
-                                <th class="text-center">Answered</th>
-                                <th class="text-center">Answer Count</th>
-                                <th class="text-center">View Count</th>
-                                <th class="text-center">Votes</th>
-                                <th class="text-center">Owner Reputation</th>
-                                <th class="text-center">Accept Rate</th>
-                            </tr>
-                        </thead>
-                        <tr ng-repeat="question in questions" ng-click="selectQuestion(question)" ng-class="{danger: question.question_id % 2}">
-                            <td><a ng-href="{{question.link}}" target="_blank" ng-bind-html="question.title"></a></td>
-                            <td ng-bind="question.tags"></td>
-                            <td class="text-center"><span ng-show="question.is_answered" class="glyphicon glyphicon-ok icon-success"></span></td>
-                            <td class="text-center"><span ng-show="question.answer_count" ng-bind=" question.answer_count | number"></span></td>
-                            <td class="text-center"><span ng-show="question.view_count" ng-bind=" question.view_count | number"></span></td>
-                            <td class="text-center"><span ng-show="question.score" ng-bind="question.score | number"></span></td>
-                            <td class="text-center"><span ng-show="question.owner.reputation" ng-bind=" question.owner.reputation | number"></span></td>
-                            <td class="text-center"><span ng-show="question.owner.accept_rate" ng-bind="question.owner.accept_rate + '%'"></span></td>
-                        </tr>
-                    </table>
-                </div>
+        <!-- Grid -->
+        <div>
+            <div class="pull-right">
+                <label for="fromDate">Update Interval (Mins):</label>
+                <input type="number" name="updateInterval" ng-model="updateIntervalMins" />
             </div>
-        </section>
+            <span class="pull-right" ng-if="lastUpdateDate">Last Update: {{lastUpdateDate | date:'HH:mm:ss'}}</span>
+            <button class="btn btn-primary" ng-if="!lastUpdateDate" ng-click="initialize()">Initialize Feed</button>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Tags</th>
+                        <th class="text-center">Answered</th>
+                        <th class="text-center">Answer Count</th>
+                        <th class="text-center">View Count</th>
+                        <th class="text-center">Votes</th>
+                        <th class="text-center">Owner Reputation</th>
+                        <th class="text-center">Accept Rate</th>
+                    </tr>
+                </thead>
+                <tr ng-repeat="question in questions" ng-click="selectQuestion(question)" ng-class="{danger: question.question_id % 2}">
+                    <td><a ng-href="{{question.link}}" target="_blank" ng-bind-html="question.title"></a></td>
+                    <td ng-bind="question.tags"></td>
+                    <td class="text-center"><span ng-show="question.is_answered" class="glyphicon glyphicon-ok icon-success"></span></td>
+                    <td class="text-center"><span ng-show="question.answer_count" ng-bind=" question.answer_count | number"></span></td>
+                    <td class="text-center"><span ng-show="question.view_count" ng-bind=" question.view_count | number"></span></td>
+                    <td class="text-center"><span ng-show="question.score" ng-bind="question.score | number"></span></td>
+                    <td class="text-center"><span ng-show="question.owner.reputation" ng-bind=" question.owner.reputation | number"></span></td>
+                    <td class="text-center"><span ng-show="question.owner.accept_rate" ng-bind="question.owner.accept_rate + '%'"></span></td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <!-- Vendor Scripts -->
+    <!--<script src='https://api.stackexchange.com/js/2.0/all.js'></script>-->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
@@ -87,6 +81,7 @@
     <!-- controllers -->
     <script src="js/controllers/GridController.js"></script>
     <script src="js/controllers/FilterController.js"></script>
+    <script src="js/controllers/HeaderController.js"></script>
 
     <!-- app Filters -->
 
@@ -96,5 +91,14 @@
     <script src="js/services/DataContext.js"></script>
 
     <!-- app Directives -->
+
+    <!--<script type='text/javascript'>
+        SE.init({
+            clientId: 2874,
+            key: 'fFGxJHjVNmw4u*YZqKNLlw((',
+            channelUrl: 'http://localhost:2428/src/blank.html',
+            complete: function (data) { console.log(data); }
+        });
+    </script>-->
 </body>
 </html>

@@ -6,7 +6,8 @@
 
     function Identity($q, $http) {
         return {
-            quotaRemaining: null
+            quotaRemaining: null,
+            authenticated: false
         };
     }
 })();
