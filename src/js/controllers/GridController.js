@@ -2,9 +2,9 @@
     'use strict';
 
     var controllerId = 'GridController';
-    app.controller(controllerId, ['$scope', '$timeout', '$modal', 'DataService', GridController]);
+    app.controller(controllerId, ['$scope', '$timeout', '$modal', 'StackProxy', GridController]);
 
-    function GridController($scope, $interval, $modal, dataService) {
+    function GridController($scope, $interval, $modal, proxy) {
         var updateInterval = null;
 
         $scope.updateIntervalMins = 2; 
@@ -43,7 +43,7 @@
 
         
         function loadQuestions() {
-            dataService.getQuestions($scope.filters) //send in filters here - filters that are on
+            proxy.getQuestions($scope.filters) //send in filters here - filters that are on
                 .then(function (data) {
                     //console.log('Loaded questions');
                     $scope.questions = data.items;
@@ -79,21 +79,21 @@
 
         //loadTags('stackoverflow');
 
-        function loadTags(site) {
-            //load tags
-            dataService.getTags() //send in filters here?
-                .then(function (data) {
-                    angular.forEach(data.items, function (value, key) {
-                        $scope.tags.push({
-                            site: site,
-                            tag: value.name,
-                            count: value.count
-                        })
-                    });
-                    console.log($scope.tags);
-                }), function (reason) {
-                    alert('Failed: ' + reason);
-                };
-        }
+        //function loadTags(site) {
+        //    //load tags
+        //    dataService.getTags() //send in filters here?
+        //        .then(function (data) {
+        //            angular.forEach(data.items, function (value, key) {
+        //                $scope.tags.push({
+        //                    site: site,
+        //                    tag: value.name,
+        //                    count: value.count
+        //                })
+        //            });
+        //            console.log($scope.tags);
+        //        }), function (reason) {
+        //            alert('Failed: ' + reason);
+        //        };
+        //}
     }
 })();

@@ -58,7 +58,7 @@
                                 <th class="text-center">Accept Rate</th>
                             </tr>
                         </thead>
-                        <tr ng-repeat="question in questions" ng-click="selectQuestion(question)">
+                        <tr ng-repeat="question in questions" ng-click="selectQuestion(question)" ng-class="{danger: question.question_id % 2}">
                             <td><a ng-href="{{question.link}}" target="_blank" ng-bind-html="question.title"></a></td>
                             <td ng-bind="question.tags"></td>
                             <td class="text-center"><span ng-show="question.is_answered" class="glyphicon glyphicon-ok icon-success"></span></td>
@@ -89,12 +89,11 @@
     <script src="js/controllers/FilterController.js"></script>
 
     <!-- app Filters -->
-    <script src="js/filters/decodeURIComponent.js"></script>
 
     <!-- app Services -->
-    <script src="js/services/DataService.js"></script>
-    <script src="js/services/FilterService.js"></script>
-    <script src="js/services/IdentityService.js"></script>
+    <script src="js/services/Identity.js"></script>
+    <script src="js/services/StackProxy.js"></script>
+    <script src="js/services/DataContext.js"></script>
 
     <!-- app Directives -->
 </body>

@@ -1,10 +1,10 @@
 ﻿(function () {
     'use strict';
 
-    var serviceId = 'DataService';
-    app.factory(serviceId, ['$q', '$http', 'IdentityService', DataService]);
+    var serviceId = 'StackProxy';
+    app.factory(serviceId, ['$q', '$http', 'Identity', StackProxy]);
 
-    function DataService($q, $http, identity) {
+    function StackProxy($q, $http, identity) {
         //TODO - Refactor updateQuota to an http interceptor?
 
         var rootUri = 'http://api.stackexchange.com/2.2';
