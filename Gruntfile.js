@@ -1,6 +1,6 @@
-'use strict';
-
 module.exports = function (grunt) {
+    'use strict';
+
     grunt.initConfig({
         karma: {
             unit: {
@@ -10,7 +10,15 @@ module.exports = function (grunt) {
             }
         },
         jshint: {
-            files: ['Gruntfile.js', 'src/js/**/*.js', 'test/**/*.js']
+            files: ['Gruntfile.js', 'src/js/**/*.js', 'test/**/*.js'],
+            options: {
+                globals: {
+                    jQuery: true,
+                    console: true,
+                    module: true,
+                    angular: true
+                }
+            }
         },
         clean: {
             all: {

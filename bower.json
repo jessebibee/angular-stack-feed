@@ -9,6 +9,7 @@
     "angular-mocks": "~1.2.16",
     "angular-sanitize": "~1.2.16",
     "underscore": "~1.6.0",
-    "toastr": "~2.0.1"
+    "toastr": "~2.0.1",
+    "angular-ui-select2": "~0.0.5"
   }
 }

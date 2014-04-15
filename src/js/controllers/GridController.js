@@ -7,10 +7,15 @@
     function GridController($scope, $interval, $window, notifier, context, proxy) {
         var updateInterval = null;
 
+        $scope.feedOn = false;
         $scope.updateIntervalMins = 1; 
         $scope.lastUpdateDate = null;
         $scope.questions = [];
-        $scope.filters = [{ name: 'Angularjs', includedTags: ['angularjs'], excludedTags: [] }];
+        $scope.tags = {};
+        $scope.tagOptions = {
+            placeholder: "Type to search or select from the dropdown..."
+        };
+        $scope.parameters = {};
 
         $scope.openQuestion = function (question) {
             context.addViewedQuestion(question.question_id);
@@ -22,11 +27,33 @@
         };
 
         $scope.initialize = function () {
-            loadQuestions();
+            $scope.feedOn = true;
+            loadQuestions(true);
         };
 
-        function loadQuestions() {
-            proxy.getQuestions($scope.filters) //send in filters here - filters that are on
+        $scope.search = function () {
+            $scope.feedOn = false;
+            if (updateInterval) {
+                $interval.cancel(updateInterval);
+            }
+            loadQuestions(false);
+        };
+
+        $scope.turnFeedOn = function () {
+            $scope.initialize();
+        };
+
+        $scope.turnFeedOff = function () {
+            $scope.feedOn = false;
+            if (updateInterval) {
+                $interval.cancel(updateInterval);
+            }
+        };
+
+        loadTags('stackoverflow', 1, 100);
+
+        function loadQuestions(startInterval) {
+            proxy.getQuestions($scope.parameters)
                 .then(function (data) {
                     var newQuestionsCount = getTotalNewQuestions(data.items);
                     $scope.questions = data.items;
@@ -38,8 +65,9 @@
                     notifier.error('Failed: ' + reason);
                 };
 
-            updateInterval = $interval(loadQuestions, $scope.updateIntervalMins * 60000);
-            //updateClock = $timeout(updateClockTime, 1000);
+            if (startInterval) {
+                updateInterval = $interval(loadQuestions, $scope.updateIntervalMins * 60000);
+            }
         }
 
         function getTotalNewQuestions(newQuestions) {
@@ -55,40 +83,18 @@
             return _.difference(newQuestionIds, oldQuestionIds).length;
         }
 
-
-
-
-        //$scope.addFilter = function () {
-        //    var modalInstance = $modal.open({
-        //        templateUrl: 'partials/filter.html',
-        //        scope: $scope,
-        //        controller: 'FilterController'
-        //        //resolve: {
-        //        //    items: function () {
-        //        //        return $scope.items;
-        //        //    }
-        //        //}
-        //    });
-
-        //};
-
-        //loadTags('stackoverflow');
-
-        //function loadTags(site) {
-        //    //load tags
-        //    dataService.getTags() //send in filters here?
-        //        .then(function (data) {
-        //            angular.forEach(data.items, function (value, key) {
-        //                $scope.tags.push({
-        //                    site: site,
-        //                    tag: value.name,
-        //                    count: value.count
-        //                })
-        //            });
-        //            console.log($scope.tags);
-        //        }), function (reason) {
-        //            alert('Failed: ' + reason);
-        //        };
-        //}
+        function loadTags(site, page, pageSize) {
+            proxy.getTags(site, page, pageSize) 
+                .then(function (data) {
+                    if (!$scope.tags[site]) {
+                        $scope.tags[site] = [];
+                    }
+                    angular.forEach(data.items, function (value, key) {
+                        $scope.tags[site].push(value);
+                    });
+                }), function (reason) {
+                    notifier.error('Failed: ' + reason);
+                };
+        }
     }
 })();

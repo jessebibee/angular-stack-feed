@@ -9,9 +9,9 @@
 
         var rootUri = 'http://api.stackexchange.com/2.2';
 
-        var getQuestions = function (filters) {
+        var getQuestions = function (parameters) {
             var deferred = $q.defer();
-            $http.get(rootUri + '/search/advanced?key=' + key + '&order=desc&sort=creation&tagged=' + filters[0].includedTags.join(';') + '&site=stackoverflow')
+            $http.get(rootUri + '/search?key=' + key + '&page=1&pageSize=100&site=stackoverflow' + buildSearchQuery(parameters))
                 .success(function (data, status, headers, config) {
                     updateQuota(data);
                     deferred.resolve(data);
@@ -23,9 +23,9 @@
             return deferred.promise;
         }
 
-        var getTags = function () {
+        var getTags = function (site, page, pageSize) {
             var deferred = $q.defer();
-            $http.get(rootUri + '/tags?key=' + key + '&order=desc&sort=popular&site=stackoverflow')
+            $http.get(rootUri + '/tags?key=' + key + '&page=' + page + '&pageSize=' + pageSize + '&order=desc&sort=popular&site=' + site)
                 .success(function (data, status, headers, config) {
                     updateQuota(data);
                     deferred.resolve(data);
@@ -41,6 +41,27 @@
             if (data && data.hasOwnProperty('quota_remaining')) {
                 identity.quotaRemaining = data.quota_remaining;
             }
+        }
+
+        function buildSearchQuery(parameters) {
+            var queryString = '';
+            if (parameters.sort) {
+                queryString = queryString + '&sort=' + parameters.sort;
+            }
+            if (parameters.sortOrder) {
+                queryString = queryString + '&order=' + parameters.sortOrder;
+            }
+            if (parameters.query) {
+                //use only if using search/advanced method otherwise the querystring param is q
+                queryString = queryString + '&intitle=' + parameters.query;
+            }
+            if (parameters.includedTags && parameters.includedTags.length > 0) {
+                queryString = queryString + '&tagged=' + parameters.includedTags.join(';');
+            }
+            if (parameters.excludedTags && parameters.excludedTags.length > 0) {
+                queryString = queryString + '&nottagged=' + parameters.excludedTags.join(';');
+            }
+            return queryString;
         }
 
         return {

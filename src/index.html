@@ -4,23 +4,71 @@
     <title></title>
     <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <link href="bower_components/toastr/toastr.css" rel="stylesheet" />
+    <link href="bower_components/select2/select2.css" rel="stylesheet" />
     <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
     <div ng-include src="'partials/header.html'"></div>
     <div class="container" ng-controller="GridController">
         <!-- Filters -->
-
+        <div class="col-lg-12">
+            <form role="form">
+                <div class="form-group">
+                    <label for="query">In Title</label>
+                    <input type="text" ng-model="parameters.query" class="form-control" id="query" placeholder="Text included in the title of a question">
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-8">
+                        <label for="query">Included Tags</label>
+                        <select ui-select2="tagOptions" multiple ng-model="parameters.includedTags">
+                            <option ng-repeat="tag in tags.stackoverflow" value="{{tag.name}}">{{tag | tag}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="query">Excluded Tags</label>
+                        <select ui-select2="tagOptions" multiple ng-model="parameters.excludedTags">
+                            <option ng-repeat="tag in tags.stackoverflow" value="{{tag.name}}">{{tag | tag}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="controls-row">
+                        <label class="control-label">Sort</label>
+                        <select class="form-control" ng-model="parameters.sort">
+                            <option value="creation">Creation Date</option>
+                            <option value="votes">Votes</option>
+                            <option value="activity">Last Activity Date</option>
+                            <option value="relevance">Relevance</option>
+                        </select>
+                        <label class="radio inline">
+                            <input type="radio" name="sortOrder" value="asc" ng-model="parameters.sortOrder" />
+                            Ascending
+                        </label>
+                        <label class="radio inline">
+                            <input type="radio" name="sortOrder" value="desc" ng-model="parameters.sortOrder" />
+                            Descending
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" ng-disabled="feedOn" ng-click="initialize()">Initialize Feed</button>
+                <button class="btn btn-success" ng-click="search()">Search</button>
+            </form>
+        </div>
 
         <!-- Grid -->
         <div>
-            <div class="pull-right">
-                <label for="fromDate">Update Interval (Mins):</label>
-                <input type="number" name="updateInterval" ng-model="updateIntervalMins" />
+            <div ng-if="feedOn" class="col-lg-12">
+                <a ng-click="turnFeedOn">On</a>
+                <a ng-click="turnFeedOff">Off</a>
+                <div class="pull-right">
+                    <label for="fromDate">Update Interval (Mins):</label>
+                    <input type="number" name="updateInterval" ng-model="updateIntervalMins" />
+                </div>
+                <div class="pull-right">
+                    <label>Last Update: {{lastUpdateDate | date:'HH:mm:ss'}}</label>
+                </div>
             </div>
-            <span class="pull-right" ng-if="lastUpdateDate">Last Update: {{lastUpdateDate | date:'HH:mm:ss'}}</span>
-            <button class="btn btn-primary" ng-if="!lastUpdateDate" ng-click="initialize()">Initialize Feed</button>
-            <table class="table table-hover">
+            <table class="table table-hover col-lg-12">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -52,10 +100,12 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/toastr/toastr.js"></script>
+    <script src="bower_components/select2/select2.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-ui-select2/src/select2.js"></script>
 
     <!-- Bootstrapping -->
     <script src="js/app.js"></script>
@@ -66,6 +116,7 @@
     <script src="js/controllers/HeaderController.js"></script>
 
     <!-- app Filters -->
+    <script src="js/filters/tag.js"></script>
 
     <!-- app Services -->
     <script src="js/services/Identity.js"></script>
@@ -74,7 +125,6 @@
     <script src="js/services/Notifier.js"></script>
 
     <!-- app Directives -->
-
     <!--<script type='text/javascript'>
         SE.init({
             clientId: 2874,

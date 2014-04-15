@@ -8,13 +8,13 @@ describe('Grid', function () {
     beforeEach(function () {
         //Option 1
         //contextMock = jasmine.createSpyObj('context', ['getViewedQuestions']);
-
         //Option 2
         contextMock = {
             getViewedQuestions: function () {
                 return [2, 4, 6];
             }
         };
+
         module(function ($provide) {
             $provide.value('DataContext', contextMock);
         });
