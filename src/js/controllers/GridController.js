@@ -5,15 +5,14 @@
     app.controller(controllerId, ['$scope', '$timeout', '$window', 'Notifier', 'DataContext', 'StackProxy', GridController]);
 
     function GridController($scope, $interval, $window, notifier, context, proxy) {
-        var updateInterval = null;
-
         $scope.feedOn = false;
-        $scope.updateIntervalMins = 1; 
+        $scope.updateIntervalMins = 2; 
         $scope.lastUpdateDate = null;
         $scope.questions = [];
         $scope.tags = {};
         $scope.tagOptions = {
-            placeholder: "Type to search or select from the dropdown..."
+            placeholder: 'Type to search or select from the dropdown'
+            //look on website for more options
         };
         $scope.parameters = {};
 
@@ -26,33 +25,36 @@
             return _.contains(context.getViewedQuestions(), questionId);
         };
 
-        $scope.initialize = function () {
+        $scope.initializeFeed = function () {
             $scope.feedOn = true;
-            loadQuestions(true);
+            loadQuestions();
+        };
+
+        $scope.updateFeed = function () {
+            $scope.feedOn = true;
+            loadQuestions();
         };
 
         $scope.search = function () {
             $scope.feedOn = false;
-            if (updateInterval) {
-                $interval.cancel(updateInterval);
-            }
-            loadQuestions(false);
+            loadQuestions();
         };
 
         $scope.turnFeedOn = function () {
-            $scope.initialize();
+            $scope.feedOn = true;
         };
 
         $scope.turnFeedOff = function () {
             $scope.feedOn = false;
-            if (updateInterval) {
-                $interval.cancel(updateInterval);
-            }
+        };
+
+        $scope.reloadQuestions = function () {
+            loadQuestions();
         };
 
         loadTags('stackoverflow', 1, 100);
 
-        function loadQuestions(startInterval) {
+        function loadQuestions() {
             proxy.getQuestions($scope.parameters)
                 .then(function (data) {
                     var newQuestionsCount = getTotalNewQuestions(data.items);
@@ -64,10 +66,6 @@
                 }), function (reason) {
                     notifier.error('Failed: ' + reason);
                 };
-
-            if (startInterval) {
-                updateInterval = $interval(loadQuestions, $scope.updateIntervalMins * 60000);
-            }
         }
 
         function getTotalNewQuestions(newQuestions) {

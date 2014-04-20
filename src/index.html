@@ -10,65 +10,78 @@
 <body>
     <div ng-include src="'partials/header.html'"></div>
     <div class="container" ng-controller="GridController">
-        <!-- Filters -->
-        <div class="col-lg-12">
-            <form role="form">
+        <!-- Parameters -->
+        <div>
+            <form class="form-horizontal" role="form">
                 <div class="form-group">
-                    <label for="query">In Title</label>
-                    <input type="text" ng-model="parameters.query" class="form-control" id="query" placeholder="Text included in the title of a question">
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-8">
-                        <label for="query">Included Tags</label>
-                        <select ui-select2="tagOptions" multiple ng-model="parameters.includedTags">
-                            <option ng-repeat="tag in tags.stackoverflow" value="{{tag.name}}">{{tag | tag}}</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label for="query">Excluded Tags</label>
-                        <select ui-select2="tagOptions" multiple ng-model="parameters.excludedTags">
-                            <option ng-repeat="tag in tags.stackoverflow" value="{{tag.name}}">{{tag | tag}}</option>
-                        </select>
+                    <label for="query" class="col-lg-1">In Title</label>
+                    <div class="col-lg-11">
+                        <input type="text" class="form-control" id="query" ng-model="parameters.query" placeholder="Text included in the title of a question">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="controls-row">
-                        <label class="control-label">Sort</label>
-                        <select class="form-control" ng-model="parameters.sort">
+                    <label for="includedTags" class="col-lg-offset-1 col-lg-6">Included Tags</label>
+                    <div class="col-lg-1"></div>
+                    <label for="excludedTags" class="col-lg-4">Excluded Tags</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-1">Tags</label>
+                    <select class="col-lg-6" id="includedTags" ui-select2="tagOptions" multiple ng-model="parameters.includedTags">
+                        <option ng-repeat="tag in tags.stackoverflow" value="{{tag.name}}">{{tag | tag}}</option>
+                    </select>
+                    <div class="col-lg-1"></div>
+                    <select class="col-lg-4" id="excludedTags" ui-select2="tagOptions" multiple ng-model="parameters.excludedTags">
+                        <option ng-repeat="tag in tags.stackoverflow" value="{{tag.name}}">{{tag | tag}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sort" class="col-lg-1">Sort</label>
+                    <div class="col-lg-2">
+                        <select class=" form-control" id="sort" ng-model="parameters.sort">
                             <option value="creation">Creation Date</option>
                             <option value="votes">Votes</option>
                             <option value="activity">Last Activity Date</option>
                             <option value="relevance">Relevance</option>
                         </select>
+                    </div>
+                    <div class="col-lg-1">
                         <label class="radio inline">
                             <input type="radio" name="sortOrder" value="asc" ng-model="parameters.sortOrder" />
                             Ascending
                         </label>
+                    </div>
+                    <div class="col-lg-1">
                         <label class="radio inline">
                             <input type="radio" name="sortOrder" value="desc" ng-model="parameters.sortOrder" />
                             Descending
                         </label>
                     </div>
                 </div>
-                <button class="btn btn-primary" ng-disabled="feedOn" ng-click="initialize()">Initialize Feed</button>
-                <button class="btn btn-success" ng-click="search()">Search</button>
+                <div class="form-group">
+                    <div class="col-lg-offset-1 col-lg-11">
+                        <button class="btn btn-primary" ng-if="!feedOn" ng-click="initializeFeed()">Initialize Feed</button>
+                        <button class="btn btn-primary" ng-if="feedOn" ng-click="updateFeed()">Update Feed</button>
+                        <button class="btn btn-success" ng-click="search()">Search</button>
+                    </div>
+                </div>
             </form>
         </div>
 
         <!-- Grid -->
-        <div>
-            <div ng-if="feedOn" class="col-lg-12">
-                <a ng-click="turnFeedOn">On</a>
-                <a ng-click="turnFeedOff">Off</a>
-                <div class="pull-right">
-                    <label for="fromDate">Update Interval (Mins):</label>
-                    <input type="number" name="updateInterval" ng-model="updateIntervalMins" />
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <div class="btn-group pull-right">
+                    <a href="#" class="btn btn-sm" ng-class="{'btn-success': feedOn, 'btn-default': !feedOn}" ng-click="turnFeedOn()">On</a>
+                    <a href="#" class="btn btn-sm" ng-class="{'btn-danger': !feedOn, 'btn-default': feedOn}" ng-click="turnFeedOff()">Off</a>
                 </div>
-                <div class="pull-right">
-                    <label>Last Update: {{lastUpdateDate | date:'HH:mm:ss'}}</label>
+                <div class="pull-right" style="margin-right: 20px; margin-top: 5px;">
+                    <span>Update Interval Mins: </span><input type="number" ng-model="updateIntervalMins" style="width: 35px;">
                 </div>
+                <span class="pull-right" ng-if="feedOn" style="margin-right: 20px; margin-top: 5px;">
+                    Next Update: <countdown-timer on="feedOn" restart="true" seconds="updateIntervalMins * 60" countdown-expired="reloadQuestions()"></countdown-timer>
+                </span>
             </div>
-            <table class="table table-hover col-lg-12">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -125,6 +138,7 @@
     <script src="js/services/Notifier.js"></script>
 
     <!-- app Directives -->
+    <script src="js/directives/countdownTimer.js"></script>
     <!--<script type='text/javascript'>
         SE.init({
             clientId: 2874,
