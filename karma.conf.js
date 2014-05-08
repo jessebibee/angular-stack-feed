@@ -22,10 +22,7 @@ module.exports = function(config) {
             'src/bower_components/angular-bootstrap/ui-bootstrap.js',
             'src/bower_components/toastr/toastr.js',
             'src/bower_components/angular-ui-select2/src/select2.js',
-            //'src/bower_components/sinon/lib/sinon.js',
-            //'src/bower_components/sinon/lib/sinon/sinon/spy.js',
-            //'src/bower_components/sinon/lib/sinon/sinon/stub.js',
-            //'src/bower_components/sinon/lib/sinon/sinon/mock.js',
+            //'src/bower_components/sinon/lib/**/*.js', //doesnt seem to be complete
             'test/libs/sinon.js',
             'src/js/**/*.js',
             'test/unit/**/*.js'
