@@ -1,10 +1,10 @@
 ﻿(function () {
     'use strict';
 
-    var serviceId = 'Identity';
-    app.factory(serviceId, ['$q', '$http', Identity]);
+    var serviceId = 'identity';
+    app.factory(serviceId, ['$q', '$http', identity]);
 
-    function Identity($q, $http) {
+    function identity($q, $http) {
         return {
             quotaRemaining: null,
             authenticated: false

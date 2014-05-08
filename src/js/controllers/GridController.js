@@ -2,19 +2,22 @@
     'use strict';
 
     var controllerId = 'GridController';
-    app.controller(controllerId, ['$scope', '$timeout', '$window', 'Notifier', 'DataContext', 'StackProxy', GridController]);
+    app.controller(controllerId, ['$scope', '$window', 'notifier', 'dataContext', 'stackProxy', GridController]);
 
-    function GridController($scope, $interval, $window, notifier, context, proxy) {
+    function GridController($scope, $window, notifier, context, proxy) {
         $scope.feedOn = false;
-        $scope.updateIntervalMins = 2; 
-        $scope.lastUpdateDate = null;
+        $scope.initialized = false;
+        $scope.updateIntervalMins = 2;
         $scope.questions = [];
         $scope.tags = {};
         $scope.tagOptions = {
             placeholder: 'Type to search or select from the dropdown'
             //look on website for more options
         };
-        $scope.parameters = {};
+        $scope.parameters = {
+            sort: 'creation',
+            sortOrder: 'desc'
+        };
 
         $scope.openQuestion = function (question) {
             context.addViewedQuestion(question.question_id);
@@ -27,16 +30,19 @@
 
         $scope.initializeFeed = function () {
             $scope.feedOn = true;
+            $scope.initialized = true;
             loadQuestions();
         };
 
         $scope.updateFeed = function () {
             $scope.feedOn = true;
-            loadQuestions();
+            $scope.$broadcast('timer-restart');
+            loadQuestions(true);
         };
 
         $scope.search = function () {
             $scope.feedOn = false;
+            $scope.initialized = true;
             loadQuestions();
         };
 
@@ -49,19 +55,24 @@
         };
 
         $scope.reloadQuestions = function () {
-            loadQuestions();
+            loadQuestions(true);
         };
 
         loadTags('stackoverflow', 1, 100);
 
-        function loadQuestions() {
+        function loadQuestions(reload) {
             proxy.getQuestions($scope.parameters)
                 .then(function (data) {
                     var newQuestionsCount = getTotalNewQuestions(data.items);
                     $scope.questions = data.items;
-                    $scope.lastUpdateDate = new Date();
-                    if (newQuestionsCount) {
-                        notifier.success('Loaded ' + newQuestionsCount + ' questions');
+                    if (newQuestionsCount > 0) {
+                        notifier.info('Loaded ' + newQuestionsCount + ' new questions');
+                    }
+                    else if (newQuestionsCount === 0 && reload) {
+                        notifier.info('No new questions loaded');
+                    }
+                    else if (newQuestionsCount === 0) {
+                        notifier.warning('0 questions found');
                     }
                 }), function (reason) {
                     notifier.error('Failed: ' + reason);

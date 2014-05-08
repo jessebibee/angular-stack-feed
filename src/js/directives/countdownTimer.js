@@ -6,8 +6,8 @@
             restrict: 'EA',
             scope: {
                 on: '=',
-                seconds: '=',
-                restart: '=',
+                startSeconds: '=',
+                autoRestart: '=',
                 countdownExpired: '&'
             },
             link: link
@@ -15,7 +15,7 @@
 
         function link($scope, $element, $attrs, $ctrl) {
             var interval;
-            var clockSeconds = $scope.seconds; //needs to be primitive typeof number
+            var timerSeconds = $scope.startSeconds; //needs to be primitive typeof number
 
             $scope.$watch('on', function (newValue) {
                 if (newValue === true) {
@@ -23,38 +23,44 @@
                 }
                 else {
                     $interval.cancel(interval);
-                    clockSeconds = $scope.seconds;
+                    timerSeconds = $scope.startSeconds;
                 }
             });
 
-            $scope.$watch('seconds', function (newValue) {
-                clockSeconds = newValue;
+            $scope.$watch('startSeconds', function (newValue) {
+                timerSeconds = newValue;
                 if ($scope.on === true) {
                     initInterval();
                 }
             });
 
+            $scope.$on('timer-restart', function () {
+                $interval.cancel(interval);
+                interval = $interval(tick, 1000, $scope.startSeconds * 1000, false);
+                timerSeconds = $scope.startSeconds;
+                setClockText();
+            });
+
             function initInterval() {
                 setClockText();
                 $interval.cancel(interval);
-                interval = $interval(tick, 1000, $scope.seconds * 1000, false);
+                interval = $interval(tick, 1000, $scope.startSeconds * 1000, false);
             }
-            
+
             function tick() {
-                clockSeconds--;
-                if (clockSeconds === 0 && $scope.restart === true) {
+                timerSeconds--;
+                if (timerSeconds === 0 && $scope.autoRestart === true) {
                     $scope.countdownExpired();
                     initInterval();
-                    clockSeconds = $scope.seconds;
+                    timerSeconds = $scope.startSeconds;
                     setClockText();
                 }
                 setClockText();
             }
 
-            //TODO - refactor to filter
             function setClockText() {
-                var minutes = Math.floor(clockSeconds / 60);
-                var seconds = clockSeconds - (minutes * 60);
+                var minutes = Math.floor(timerSeconds / 60);
+                var seconds = timerSeconds - (minutes * 60);
                 if (minutes < 10) {
                     minutes = '0' + minutes;
                 }

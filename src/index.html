@@ -59,7 +59,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-lg-offset-1 col-lg-11">
-                        <button class="btn btn-primary" ng-if="!feedOn" ng-click="initializeFeed()">Initialize Feed</button>
+                        <button class="btn btn-primary" ng-if="!feedOn && !initialized" ng-click="initializeFeed()">Initialize Feed</button>
                         <button class="btn btn-primary" ng-if="feedOn" ng-click="updateFeed()">Update Feed</button>
                         <button class="btn btn-success" ng-click="search()">Search</button>
                     </div>
@@ -71,14 +71,14 @@
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
                 <div class="btn-group pull-right">
-                    <a href="#" class="btn btn-sm" ng-class="{'btn-success': feedOn, 'btn-default': !feedOn}" ng-click="turnFeedOn()">On</a>
-                    <a href="#" class="btn btn-sm" ng-class="{'btn-danger': !feedOn, 'btn-default': feedOn}" ng-click="turnFeedOff()">Off</a>
+                    <button class="btn btn-sm" ng-class="{'btn-success': feedOn, 'btn-default': !feedOn}" ng-click="turnFeedOn()" ng-disabled="!initialized">On</button>
+                    <button class="btn btn-sm" ng-class="{'btn-danger': !feedOn, 'btn-default': feedOn}" ng-click="turnFeedOff()" ng-disabled="!initialized">Off</button>
                 </div>
                 <div class="pull-right" style="margin-right: 20px; margin-top: 5px;">
                     <span>Update Interval Mins: </span><input type="number" ng-model="updateIntervalMins" style="width: 35px;">
                 </div>
-                <span class="pull-right" ng-if="feedOn" style="margin-right: 20px; margin-top: 5px;">
-                    Next Update: <countdown-timer on="feedOn" restart="true" seconds="updateIntervalMins * 60" countdown-expired="reloadQuestions()"></countdown-timer>
+                <span class="pull-right" ng-show="feedOn" style="margin-right: 20px; margin-top: 5px;">
+                    Next Update: <countdown-timer on="feedOn" start-seconds="updateIntervalMins * 60" auto-restart="true" countdown-expired="reloadQuestions()"></countdown-timer>
                 </span>
             </div>
             <table class="table table-hover">
@@ -132,10 +132,10 @@
     <script src="js/filters/tag.js"></script>
 
     <!-- app Services -->
-    <script src="js/services/Identity.js"></script>
-    <script src="js/services/StackProxy.js"></script>
-    <script src="js/services/DataContext.js"></script>
-    <script src="js/services/Notifier.js"></script>
+    <script src="js/services/identity.js"></script>
+    <script src="js/services/stackProxy.js"></script>
+    <script src="js/services/dataContext.js"></script>
+    <script src="js/services/notifier.js"></script>
 
     <!-- app Directives -->
     <script src="js/directives/countdownTimer.js"></script>

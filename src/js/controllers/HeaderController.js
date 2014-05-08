@@ -2,7 +2,7 @@
     'use strict';
 
     var controllerId = 'HeaderController';
-    app.controller(controllerId, ['$scope', 'Identity', HeaderController]);
+    app.controller(controllerId, ['$scope', 'identity', HeaderController]);
 
     function HeaderController($scope, identity) {
         //$scope.test = 'Signed in as Mark Otto';

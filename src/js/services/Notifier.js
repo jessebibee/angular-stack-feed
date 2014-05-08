@@ -1,9 +1,9 @@
 ﻿(function () {
     'use strict';
 
-    app.factory('Notifier', Notifier);
+    app.factory('notifier', notifier);
 
-    function Notifier() {
+    function notifier() {
         var service = {
             error: error,
             info: info,

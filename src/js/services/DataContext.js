@@ -1,12 +1,11 @@
 ﻿(function () {
     'use strict';
 
-    var serviceId = 'DataContext';
-    app.factory(serviceId, DataContext);
+    var serviceId = 'dataContext';
+    app.factory(serviceId, dataContext);
 
-    function DataContext() {
+    function dataContext() {
         var viewedQuestions = []; //holds questionId's that have been opened
-        var tags = {}; //holds Stack Exchange tags
 
         var getViewedQuestions = function () {
             return viewedQuestions;
