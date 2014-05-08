@@ -7,6 +7,7 @@
     function GridController($scope, $window, notifier, context, proxy) {
         $scope.feedOn = false;
         $scope.initialized = false;
+        $scope.noQueryInput = false;
         $scope.updateIntervalMins = 2;
         $scope.questions = [];
         $scope.tags = {};
@@ -29,15 +30,21 @@
         };
 
         $scope.initializeFeed = function () {
-            $scope.feedOn = true;
-            $scope.initialized = true;
-            loadQuestions();
+            validateQuery();
+            if ($scope.parametersForm.$valid && !$scope.noQueryInput) {
+                $scope.feedOn = true;
+                $scope.initialized = true;
+                loadQuestions();
+            }
         };
 
         $scope.updateFeed = function () {
-            $scope.feedOn = true;
-            $scope.$broadcast('timer-restart');
-            loadQuestions(true);
+            validateQuery();
+            if ($scope.parametersForm.$valid && !$scope.noQueryInput) {
+                $scope.feedOn = true;
+                $scope.$broadcast('timer-restart');
+                loadQuestions(true);
+            }
         };
 
         $scope.search = function () {
@@ -46,19 +53,20 @@
             loadQuestions();
         };
 
-        $scope.turnFeedOn = function () {
-            $scope.feedOn = true;
-        };
-
-        $scope.turnFeedOff = function () {
-            $scope.feedOn = false;
-        };
-
         $scope.reloadQuestions = function () {
             loadQuestions(true);
         };
 
         loadTags('stackoverflow', 1, 100);
+
+        function validateQuery() {
+            if (!$scope.parameters.query && !$scope.parameters.includedTags.length) {
+                $scope.noQueryInput = true;
+            }
+            else {
+                $scope.noQueryInput = false;
+            }
+        }
 
         function loadQuestions(reload) {
             proxy.getQuestions($scope.parameters)
@@ -93,7 +101,7 @@
         }
 
         function loadTags(site, page, pageSize) {
-            proxy.getTags(site, page, pageSize) 
+            proxy.getTags(site, page, pageSize)
                 .then(function (data) {
                     if (!$scope.tags[site]) {
                         $scope.tags[site] = [];

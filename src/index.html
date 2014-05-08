@@ -12,11 +12,15 @@
     <div class="container" ng-controller="GridController">
         <!-- Parameters -->
         <div>
-            <form class="form-horizontal" role="form">
-                <div class="form-group">
-                    <label for="query" class="col-lg-1">In Title</label>
+            <form name="parametersForm" class="form-horizontal" role="form">
+                <div class="alert alert-danger" ng-if="noQueryInput">
+                    <strong>Error!</strong> Nothing to query on.
+                </div>
+                <div class="form-group" ng-class="{'has-error': parametersForm.query.$error.minlength || parametersForm.query.$error.maxlength}">
+                    <label for="query" class="col-lg-1 control-label">In Title</label>
                     <div class="col-lg-11">
-                        <input type="text" class="form-control" id="query" ng-model="parameters.query" placeholder="Text included in the title of a question">
+                        <input type="text" name="query" id="query" class="form-control" ng-model="parameters.query" ng-minlength="2" ng-maxlength="50"
+                               placeholder="Text included in the title of a question">
                     </div>
                 </div>
                 <div class="row">
@@ -25,7 +29,7 @@
                     <label for="excludedTags" class="col-lg-4">Excluded Tags</label>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-1">Tags</label>
+                    <label class="col-lg-1 control-label">Tags</label>
                     <select class="col-lg-6" id="includedTags" ui-select2="tagOptions" multiple ng-model="parameters.includedTags">
                         <option ng-repeat="tag in tags.stackoverflow" value="{{tag.name}}">{{tag | tag}}</option>
                     </select>
@@ -35,7 +39,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="sort" class="col-lg-1">Sort</label>
+                    <label for="sort" class="col-lg-1 control-label">Sort</label>
                     <div class="col-lg-2">
                         <select class=" form-control" id="sort" ng-model="parameters.sort">
                             <option value="creation">Creation Date</option>
@@ -71,8 +75,8 @@
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
                 <div class="btn-group pull-right">
-                    <button class="btn btn-sm" ng-class="{'btn-success': feedOn, 'btn-default': !feedOn}" ng-click="turnFeedOn()" ng-disabled="!initialized">On</button>
-                    <button class="btn btn-sm" ng-class="{'btn-danger': !feedOn, 'btn-default': feedOn}" ng-click="turnFeedOff()" ng-disabled="!initialized">Off</button>
+                    <button class="btn btn-sm" ng-class="{'btn-success': feedOn, 'btn-default': !feedOn}" ng-click="feedOn = true" ng-disabled="!initialized">On</button>
+                    <button class="btn btn-sm" ng-class="{'btn-danger': !feedOn, 'btn-default': feedOn}" ng-click="feedOn = false" ng-disabled="!initialized">Off</button>
                 </div>
                 <div class="pull-right" style="margin-right: 20px; margin-top: 5px;">
                     <span>Update Interval Mins: </span><input type="number" ng-model="updateIntervalMins" style="width: 35px;">
@@ -125,7 +129,6 @@
 
     <!-- controllers -->
     <script src="js/controllers/GridController.js"></script>
-    <script src="js/controllers/FilterController.js"></script>
     <script src="js/controllers/HeaderController.js"></script>
 
     <!-- app Filters -->
