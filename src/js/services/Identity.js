@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function (app) {
     'use strict';
 
     var serviceId = 'identity';
@@ -10,4 +10,4 @@
             authenticated: false
         };
     }
-})();
+})(angular.module('app'));

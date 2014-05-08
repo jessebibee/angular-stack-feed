@@ -1,3 +1,5 @@
+//currently not used, but start using //jshintrc: true in grunt file to switch
+
 {
   "node": true,
   "browser": true,

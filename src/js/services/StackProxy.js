@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function (app) {
     'use strict';
 
     var serviceId = 'stackProxy';
@@ -21,7 +21,7 @@
                     deferred.reject(data);
                 });
             return deferred.promise;
-        }
+        };
 
         var getTags = function (site, page, pageSize) {
             var deferred = $q.defer();
@@ -35,7 +35,7 @@
                     deferred.reject(data);
                 });
             return deferred.promise;
-        }
+        };
 
         function updateQuota(data) {
             if (data && data.hasOwnProperty('quota_remaining')) {
@@ -67,6 +67,6 @@
         return {
             getQuestions: getQuestions,
             getTags: getTags
-        }
+        };
     }
-})();
+})(angular.module('app'));

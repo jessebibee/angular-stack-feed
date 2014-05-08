@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function (app) {
     'use strict';
 
     var controllerId = 'GridController';
@@ -82,9 +82,9 @@
                     else if (newQuestionsCount === 0) {
                         notifier.warning('0 questions found');
                     }
-                }), function (reason) {
+                }, function (reason) {
                     notifier.error('Failed: ' + reason);
-                };
+                });
         }
 
         function getTotalNewQuestions(newQuestions) {
@@ -93,8 +93,8 @@
             for (var i = 0; i < $scope.questions.length; i++) {
                 oldQuestionIds.push($scope.questions[i].question_id);
             }
-            for (var i = 0; i < newQuestions.length; i++) {
-                newQuestionIds.push(newQuestions[i].question_id);
+            for (var x = 0; x < newQuestions.length; x++) {
+                newQuestionIds.push(newQuestions[x].question_id);
             }
 
             return _.difference(newQuestionIds, oldQuestionIds).length;
@@ -109,9 +109,9 @@
                     angular.forEach(data.items, function (value, key) {
                         $scope.tags[site].push(value);
                     });
-                }), function (reason) {
+                }, function (reason) {
                     notifier.error('Failed: ' + reason);
-                };
+                });
         }
     }
-})();
+})(angular.module('app'));

@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function (app) {
     'use strict';
 
     app.factory('notifier', notifier);
@@ -29,4 +29,4 @@
             toastr.warning(message);
         }
     }
-})();
+})(angular.module('app'));

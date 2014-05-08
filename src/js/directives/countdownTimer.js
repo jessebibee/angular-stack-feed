@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function (app) {
     'use strict';
 
     app.directive('countdownTimer', ['$interval', function ($interval) {
@@ -71,4 +71,4 @@
             }
         }
     }]);
-})();
+})(angular.module('app'));

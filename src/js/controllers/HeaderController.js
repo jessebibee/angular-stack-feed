@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function (app) {
     'use strict';
 
     var controllerId = 'HeaderController';
@@ -10,7 +10,7 @@
         //$scope.quotaRemaining = identity.quotaRemaining;
 
         $scope.hasQuota = function () {
-            return identity.quotaRemaining != null;
+            return identity.quotaRemaining !== null;
         };
 
         $scope.getRemainingQuota = function () {
@@ -26,4 +26,4 @@
         //    });
         //};
     }
-})();
+})(angular.module('app'));

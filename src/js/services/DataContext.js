@@ -1,4 +1,4 @@
-﻿(function () {
+﻿(function (app) {
     'use strict';
 
     var serviceId = 'dataContext';
@@ -20,4 +20,4 @@
             addViewedQuestion: addViewedQuestion
         };
     }
-})();
+})(angular.module('app'));

@@ -14,8 +14,6 @@ module.exports = function (grunt) {
             options: {
                 globals: {
                     jQuery: true,
-                    console: true,
-                    module: true,
                     angular: true
                 }
             }
@@ -55,5 +53,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.registerTask('test:unit', ['karma:unit']);
-    grunt.registerTask('default', ['clean', 'uglify', 'concat']);
+    grunt.registerTask('default', ['clean', 'jshint', 'uglify', 'concat']);
 };
