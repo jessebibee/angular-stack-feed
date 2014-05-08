@@ -20,6 +20,13 @@ module.exports = function(config) {
             'src/bower_components/underscore/underscore.js',
             'src/bower_components/angular-sanitize/angular-sanitize.js',
             'src/bower_components/angular-bootstrap/ui-bootstrap.js',
+            'src/bower_components/toastr/toastr.js',
+            'src/bower_components/angular-ui-select2/src/select2.js',
+            //'src/bower_components/sinon/lib/sinon.js',
+            //'src/bower_components/sinon/lib/sinon/sinon/spy.js',
+            //'src/bower_components/sinon/lib/sinon/sinon/stub.js',
+            //'src/bower_components/sinon/lib/sinon/sinon/mock.js',
+            'test/libs/sinon.js',
             'src/js/**/*.js',
             'test/unit/**/*.js'
         ],
@@ -61,7 +68,7 @@ module.exports = function(config) {
         // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
         // - PhantomJS
         // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-        browsers: ['Chrome', 'IE'],
+        browsers: ['Chrome'],
 
 
         // If browser does not capture in given timeout [ms], kill it
