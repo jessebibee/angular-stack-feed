@@ -45,3 +45,7 @@ To execute all unit tests, use:
 To execute end-to-end (e2e) tests, use:
 
     Coming Soon!
+
+To run the tests each time a js file is saved (use during development):
+
+	karma start
