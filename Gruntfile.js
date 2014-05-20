@@ -10,7 +10,7 @@ module.exports = function (grunt) {
             }
         },
         jshint: {
-            files: ['Gruntfile.js', 'src/js/**/*.js', 'test/**/*.js'],
+            files: ['Gruntfile.js', 'src/js/**/*.js', 'test/unit/**/*.js'],
             options: {
                 globals: {
                     jQuery: true,
@@ -43,15 +43,41 @@ module.exports = function (grunt) {
                 src: ['build/src/**/*.min.js'],
                 dest: 'build/app.js'
             }
+        },
+        copy: {
+            main: {
+                files: [
+                  {
+                      src: [
+                          "src/bower_components/bootstrap/dist/css/bootstrap.min.css",
+                          "src/bower_components/toastr/toastr.min.css",
+                          "src/bower_components/select2/select2.css",
+                          "src/bower_components/jquery/dist/jquery.min.js",
+                          "src/bower_components/underscore/underscore.js",
+                          "src/bower_components/toastr/toastr.min.js",
+                          "src/bower_components/select2/select2.min.js",
+                          "src/bower_components/angular/angular.min.js",
+                          "src/bower_components/angular-bootstrap/ui-bootstrap.min.js",
+                          "src/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
+                          "src/bower_components/angular-sanitize/angular-sanitize.min.js",
+                          "src/bower_components/angular-ui-select2/src/select2.js"
+                      ],
+                      dest: "build/",
+                      expand: true,
+                      flatten: true
+                  }
+                ]
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.registerTask('test:unit', ['karma:unit']);
-    grunt.registerTask('default', ['clean', 'jshint', 'uglify', 'concat']);
+    grunt.registerTask('default', ['clean', 'jshint', 'uglify', 'concat', 'copy']);
 };
