@@ -14,7 +14,7 @@ src/bower_components
 [Dd]ebug/
 [Rr]elease/
 x64/
-build/
+build/src
 [Bb]in/
 [Oo]bj/
 
