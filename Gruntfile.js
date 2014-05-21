@@ -41,7 +41,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: ['build/src/**/*.min.js'],
-                dest: 'build/app.js'
+                dest: 'build/js/app.js'
             }
         },
         copy: {
@@ -55,8 +55,6 @@ module.exports = function (grunt) {
                           "src/bower_components/toastr/toastr.min.js",
                           "src/bower_components/toastr/toastr.min.js.map",
                           "src/bower_components/select2/select2.min.js",
-                          "src/bower_components/select2/select2-spinner.gif",
-                          "src/bower_components/select2/select2-spinner.png",
                           "src/bower_components/angular/angular.min.js",
                           "src/bower_components/angular/angular.min.js.map",
                           "src/bower_components/angular-bootstrap/ui-bootstrap.min.js",
@@ -65,7 +63,7 @@ module.exports = function (grunt) {
                           "src/bower_components/angular-sanitize/angular-sanitize.min.js.map",
                           "src/bower_components/angular-ui-select2/src/select2.js"
                       ],
-                      dest: "build/",
+                      dest: "build/js",
                       expand: true,
                       flatten: true
                   },
@@ -73,7 +71,9 @@ module.exports = function (grunt) {
                       src: [
                           "src/bower_components/bootstrap/dist/css/bootstrap.min.css",
                           "src/bower_components/toastr/toastr.min.css",
-                          "src/bower_components/select2/select2.css"
+                          "src/bower_components/select2/select2.css",
+                          "src/bower_components/select2/select2-spinner.gif",
+                          "src/bower_components/select2/select2-spinner.png"
                       ],
                       dest: "build/css",
                       expand: true,
