@@ -49,20 +49,44 @@ module.exports = function (grunt) {
                 files: [
                   {
                       src: [
-                          "src/bower_components/bootstrap/dist/css/bootstrap.min.css",
-                          "src/bower_components/toastr/toastr.min.css",
-                          "src/bower_components/select2/select2.css",
                           "src/bower_components/jquery/dist/jquery.min.js",
+                          "src/bower_components/jquery/dist/jquery.min.map",
                           "src/bower_components/underscore/underscore.js",
                           "src/bower_components/toastr/toastr.min.js",
+                          "src/bower_components/toastr/toastr.min.js.map",
                           "src/bower_components/select2/select2.min.js",
+                          "src/bower_components/select2/select2-spinner.gif",
+                          "src/bower_components/select2/select2-spinner.png",
                           "src/bower_components/angular/angular.min.js",
+                          "src/bower_components/angular/angular.min.js.map",
                           "src/bower_components/angular-bootstrap/ui-bootstrap.min.js",
                           "src/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
                           "src/bower_components/angular-sanitize/angular-sanitize.min.js",
+                          "src/bower_components/angular-sanitize/angular-sanitize.min.js.map",
                           "src/bower_components/angular-ui-select2/src/select2.js"
                       ],
                       dest: "build/",
+                      expand: true,
+                      flatten: true
+                  },
+                  {
+                      src: [
+                          "src/bower_components/bootstrap/dist/css/bootstrap.min.css",
+                          "src/bower_components/toastr/toastr.min.css",
+                          "src/bower_components/select2/select2.css"
+                      ],
+                      dest: "build/css",
+                      expand: true,
+                      flatten: true
+                  },
+                  {
+                      src: [
+                          "src/bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
+                          "src/bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
+                          "src/bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
+                          "src/bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff"
+                      ],
+                      dest: "build/fonts",
                       expand: true,
                       flatten: true
                   }
