@@ -73,7 +73,7 @@ module.exports = function (grunt) {
                           "src/bower_components/toastr/toastr.min.css",
                           "src/bower_components/select2/select2.css",
                           "src/bower_components/select2/select2-spinner.gif",
-                          "src/bower_components/select2/select2-spinner.png"
+                          "src/bower_components/select2/select2.png"
                       ],
                       dest: "build/css",
                       expand: true,
